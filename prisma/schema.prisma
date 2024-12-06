@@ -1,0 +1,148 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  name              String  
+  first_last_name   String  
+  second_last_name  String? 
+  email             String    
+  password          String
+  acronym           String?   @db.VarChar(10)
+  active            Boolean   @default(false)
+  is_deleted        Boolean   @default(false)
+  created_at        DateTime  @default(now())
+  updated_at        DateTime  @updatedAt
+
+  authToken         AuthToken[]
+  userHasRole       UserHasRole[]
+
+  @@map("user")
+}
+
+// Model invalid access token
+model AuthToken {
+  token         String      @id
+  revoked       Boolean     @default(false)
+  user_id       Int
+  user          User        @relation(fields: [user_id], references: [id])
+  created_at    DateTime    
+  expires_at    DateTime
+
+  @@map("auth_token")
+}
+
+
+model CatModule {
+  id            Int       @id @default(autoincrement())
+  name          String
+  key           String    
+  description   String?
+  active        Boolean   @default(true)
+  is_deleted     Boolean   @default(false)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  // Relaciones
+  permissionsModule PermissionModule[]
+  permissions       Permissions[]
+  
+  @@map("cat_module")  // Mapear nombre de la tabla en BD en formato snake_case
+}
+
+model CatPermissionList {
+  id            Int       @id @default(autoincrement())
+  name          String
+  key           String    @db.VarChar(30)
+  active        Boolean   @default(true)
+  is_deleted     Boolean   @default(false)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  // Relaciones
+  permissions   PermissionModule[]
+
+  @@map("cat_permission_list")
+}
+
+model PermissionModule {
+  module_id           Int
+  permission_list_id  Int
+
+  // Relaciones
+  module          CatModule         @relation(fields: [module_id], references: [id])
+  permissionList  CatPermissionList @relation(fields: [permission_list_id], references: [id])
+
+  @@id([module_id, permission_list_id]) // Clave primaria compuesta
+  @@map("permission_module")
+}
+
+model Roles {
+  id            Int       @id @default(autoincrement())
+  name          String
+  key           String    @db.VarChar(30)    
+  description   String?
+  active        Boolean   @default(true)
+  is_deleted     Boolean   @default(false)
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @updatedAt
+
+  roleHasPermission RoleHasPermissions[]
+  userHasRole       UserHasRole[]
+
+  @@map("roles")
+}
+
+model Permissions {
+  id            Int         @id @default(autoincrement())
+  name          String      
+  action        String
+  active        Boolean     @default(true)
+  module_id     Int
+  is_deleted     Boolean     @default(false)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+
+  module        CatModule   @relation(fields: [module_id], references: [id])
+  
+  roleHasPermission RoleHasPermissions[]
+
+  @@map("permissions")
+}
+
+model RoleHasPermissions {
+  role_id       Int
+  permission_id Int
+
+  role          Roles       @relation(fields: [role_id], references: [id])
+  permissions   Permissions @relation(fields: [permission_id], references: [id])
+
+  @@id([role_id, permission_id])
+
+  @@map("role_has_permissions")
+}
+
+model UserHasRole {
+  role_id Int
+  user_id Int
+
+  role    Roles   @relation(fields: [role_id], references: [id])
+  user    User    @relation(fields: [user_id], references: [id])
+
+  @@id([role_id, user_id])
+
+  @@map("user_has_role")
+}
