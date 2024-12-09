@@ -32,8 +32,10 @@ class AuthToken {
      */
     handleVerifyToken = async (userId) => {
         const authTokenActive = await AuthTokenModel.findOne({
-            user_id: userId,
-            revoked: false
+            where: {
+                user_id: userId,
+                revoked: false
+            }
         })
 
         if (!authTokenActive) return null
@@ -55,7 +57,7 @@ class AuthToken {
      */
     handleDestroyToken = async (token) => {
         try {
-            const activeToken = await AuthTokenModel.findOne({ token, revoked: false })
+            const activeToken = await AuthTokenModel.findOne({ where: { token, revoked: false } })
             
             if (!activeToken) return null
             
