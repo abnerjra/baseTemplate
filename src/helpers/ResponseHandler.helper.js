@@ -73,6 +73,17 @@ class ResponseHandler {
      * Obtener un mensaje del archivo de mensajes.
      * @param {string} path - Ruta del mensaje (e.g., 'fails.duplicate').
      * @returns {Object} - Mensaje encontrado.
+     * 
+     * @example
+     * // Estructura de los mensajes, de acuerdo al parámetro recibido
+     * // 'response.read'
+     *  response: {
+     *      read:   { message: "Información de registro", severity: "success", code: 200 },
+     *  }
+     * 
+     * @note
+     * Consultar más mensajes ver el archivo messages.js
+     * 
      */
     static getMessage = (path) => {
         const keys = path.split('.');
