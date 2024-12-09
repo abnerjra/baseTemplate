@@ -7,14 +7,17 @@ class ModuleModel extends BaseModel {
     }
 
     hasPermission = async (moduleId) => {
-        const select = {
-            permissionList: {
-                select: {
-                    name: true, key: true
+        const options = {
+            select: {
+                permissionList: {
+                    select: {
+                        name: true, key: true
+                    }
                 }
-            }
+            },
+            where: { module_id: moduleId }
         }
-        const listPermissions = await PermissionModuleModel.findAll(select, { module_id: moduleId })
+        const listPermissions = await PermissionModuleModel.findAll(options)
         
         return listPermissions.map(list => list.permissionList)
     }

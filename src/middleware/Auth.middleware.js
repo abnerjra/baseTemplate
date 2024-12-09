@@ -23,8 +23,10 @@ class Auth {
             // validar que el token del usuario continue activo
             const activeToken = await handleVerifyToken(user.id)
             if (!activeToken)  return error(res, getMessage('auth.invalidToken'))
+
+            const { is_deleted, created_at, updated_at, ...filterUser } = user
             
-            req.user = user
+            req.user = filterUser
             next()
         } catch (error) {
             return errorLog(res, getMessage('auth.sessionExpire'), error)

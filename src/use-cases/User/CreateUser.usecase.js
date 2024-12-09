@@ -10,7 +10,7 @@ class CreateUser {
             const data = req.body;
 
             // Verificar si el correo ya existe
-            const checkEmail = await UserModel.findAll(null, { email: data.email });
+            const checkEmail = await UserModel.findAll({ where: { email: data.email } });
             if (checkEmail.length) return error(res, getMessage('validate.existsEmail'));
             // return res.status(200).json({ data })
 
@@ -48,7 +48,7 @@ class CreateUser {
 
             if (error.isCustomError) {
                 // Manejar errores personalizados
-                return errorLog(res, error.message, error);
+                return error(res, error.message);
             } else {
                 // Manejar errores generales (de ejecución)
                 return errorLog(res, 'Error al crear el usuario', error);

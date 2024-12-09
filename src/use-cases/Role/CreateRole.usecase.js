@@ -11,7 +11,7 @@ class CreateRole {
             delete data.modules
             // return success(res, getMessage('response.create'), modules)
             
-            const uniqueKey = await RoleModel.findAll(null, { key: data.key })
+            const uniqueKey = await RoleModel.findAll({ where: { key: data.key } })
             if (uniqueKey.length) return error(res, getMessage('fails.duplicate'))
                 
             const result = await RoleModel.transaction(async () => {
@@ -31,7 +31,7 @@ class CreateRole {
         } catch (error) {
             await handleRebootSequence(tables)
             if (error.isCustomError) {
-                return errorLog(res, error.mesagge, error)
+                return error(res, error.mesagge)
             } else {
                 return errorLog(res, 'Error al crear el rol', error)
             }

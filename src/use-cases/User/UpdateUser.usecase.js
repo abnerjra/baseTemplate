@@ -31,7 +31,7 @@ class UpdateUser {
         } catch (error) {
             if (error.isCustomError) {
                 // Manejar errores personalizados
-                return errorLog(res, error.message, error);
+                return error(res, error.message);
             } else {
                 // Manejar errores generales (de ejecución)
                 return errorLog(res, 'Error al crear el usuario', error);

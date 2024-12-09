@@ -6,21 +6,22 @@ class ListRole {
         try {
             const query = req.query
             
-            const select = {
-                id: true,
-                name: true,
-                description: true,
-                active: true
-            }
-            const orderBy = {
-                name: 'asc'
-            }
-
             const filters = {}
             if (query.name) filters.name = { contains: query.name, mode: 'insensitive' }
             if (query.description) filters.description = { contains: query.description, mode: 'insensitive' }
 
-            const roles = await RoleModel.findAll(select, filters, orderBy)
+            const options = {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    active: true
+                },
+                where: filters,
+                orderBy: { name: 'asc' }
+            }
+
+            const roles = await RoleModel.findAll(options)
             const dataRoles = await Promise.all(
                 roles.map(async (role) =>{
                     const { permissions } = await RoleModel.getRoleRelations(role.id)
@@ -35,7 +36,6 @@ class ListRole {
             const successMessage = getMessage('response.reads')
             return success(res, successMessage, dataRoles)
         } catch (error) {
-            // return errorResponse(res, 500, 'Error al obtener el listado de roles', error);
             return errorLog(res, 'Error al obtener el listado de roles', error)
         }
     }

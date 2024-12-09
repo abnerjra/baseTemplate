@@ -1,4 +1,5 @@
 import UserModel from "../../models/UserModel.js"
+import RoleModel from "../../models/RoleModel.js"
 
 import { handleCompare } from "../../helpers/libs/Encrypted.plugin.js"
 import { tokenSing, verifyToken } from "../../helpers/libs/Token.plugin.js"
@@ -28,11 +29,23 @@ class Auth {
             // Get the token and its expiration date
             const { token, expires_at } = await this.getTokenData(user, activeToken);
             
-            const { is_deleted, created_at, updated_at, ...filterUser } = user
+            // get roles associated to user
+            const { roles } = await UserModel.getUserRelations(user.id)
+
+            let listPermission = null
+            for (const rol of roles) {
+                const { permissions } = await RoleModel.getRoleRelations(rol.id)
+                listPermission = permissions
+            }
 
             // Send response
             const data = {
-                user: filterUser,
+                id: user.id,
+                name: `${user.name} ${user.first_last_name} ${user.second_last_name}`,
+                email: user.email,
+                acronym: user.acronym,
+                roles,
+                permission: listPermission,
                 token,
                 expires_at,
             };

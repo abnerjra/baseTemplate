@@ -149,7 +149,7 @@ class RoleModel extends BaseModel{
     /**
      * Contiene las relacioones asociadas el modelo de roles
      * @param {number} roleId Identificador del rol
-     * @returns {void}
+     * @returns {Promise<Array<Object>>} - Una promesa que se resuelve con una lista de registros encontrados.
      * 
      * - Listado de relaciones
      * - permissions    =>  Permisos asociados al rol
@@ -192,30 +192,35 @@ class RoleModel extends BaseModel{
      * 
      */
     hasPermission = async (roleId) => {
-        const activePermissions = await PermissionModel.findAll({
-            name: true,
-            action: true,
-            module: {
-                select: {
-                    key: true,
-                    permissionsModule: {
-                        select: {
-                            permissionList: {
-                                select: {
-                                    name: true,
-                                    key: true
+        const options = {
+            select: {
+                name: true,
+                action: true,
+                module: {
+                    select: {
+                        key: true,
+                        permissionsModule: {
+                            select: {
+                                permissionList: {
+                                    select: {
+                                        name: true,
+                                        key: true
+                                    },
                                 },
                             },
                         },
                     },
                 },
             },
-        }, {
-            is_deleted: false, // Solo permisos activos
-            roleHasPermission: {
-                some: { role_id: roleId }, // Relación con RoleHasPermissions
-            },
-        })
+            where: {
+                is_deleted: false, // Solo permisos activos
+                roleHasPermission: {
+                    some: { role_id: roleId }, // Relación con RoleHasPermissions
+                }
+            }
+        }
+
+        const activePermissions = await PermissionModel.findAll(options)
         
         const result = activePermissions.map(permission => {
             const matchingPermission = permission.module.permissionsModule.find(pm =>

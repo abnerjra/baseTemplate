@@ -6,25 +6,26 @@ class ListUser {
         try {
             const data = req.query;
             
-            const select = {
-                id: true,
-                name: true,
-                first_last_name: true,
-                second_last_name: true,
-                email: true,
-            }
-            
             const filters = {};
             if (data.name) filters.name = { contains: data.name, mode: 'insensitive' };
             if (data.email) filters.email = { contains: data.email, mode: 'insensitive' };
             if (data.active) filters.active = data.active === 'true' || data.active == 1 ? true : false;
-            console.log(filters);            
-    
-            const orderBy = {
-                name: 'asc',
+            
+            const search = {
+                select: {
+                    id: true,
+                    name: true,
+                    first_last_name: true,
+                    second_last_name: true,
+                    email: true,
+                },
+                where: filters,
+                orderBy: {
+                    name: 'asc'
+                }
             }
-
-            const users = await UserModel.findAll(select, filters, orderBy);
+            
+            const users = await UserModel.findAll(search);
     
             if (!users.length) return success(res, getMessage('response.empty'));
     

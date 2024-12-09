@@ -4,20 +4,24 @@ import { errorLog, getMessage, success } from "../../helpers/ResponseHandler.hel
 class GetUser {
     handleUserById = async (id, res) => {
         try {
-            const select = {
-                id: true,
-                name: true,
-                first_last_name: true,
-                second_last_name: true,
-                email: true
+            const options = {
+                select: {
+                    id: true,
+                    name: true,
+                    first_last_name: true,
+                    second_last_name: true,
+                    email: true
+                },
+                where: { id }
             }
-            const user = await UserModel.findById(id, select)
+            const user = await UserModel.findById(id)
             if (!user) return success(res, getMessage('response.empty'))
 
             const { roles } = await UserModel.getUserRelations(user.id)
+            const { is_deleted, created_at, updated_at, ...filterUser } = user
 
             const getUser = {
-                ...user,
+                ...filterUser,
                 roles
             }
             

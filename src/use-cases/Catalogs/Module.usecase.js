@@ -4,13 +4,15 @@ import { error, errorLog, getMessage, success } from "../../helpers/ResponseHand
 class Module {
     handleModule = async (req, res) => {
         try {
-            const select = {
-                id: true,
-                name: true,
-                description: true,
-                active: true
+            const options = {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    active: true
+                }
             }
-            const modules = await ModuleModel.findAll(select)
+            const modules = await ModuleModel.findAll(options)
             if (!modules.length) return error(res, getMessage("response.empty"))
 
             const getModules = await Promise.all(
@@ -18,7 +20,7 @@ class Module {
                     const { listPermissions } = await ModuleModel.getRelations(module.id)
                     return {
                         ...module,
-                        listPermissions
+                        permissions: listPermissions
                     }
                 })
             )
@@ -26,7 +28,7 @@ class Module {
             return success(res, getMessage("response.reads"), getModules)
         } catch (error) {
             if (error.isCustomError) {
-                return errorLog(res, error.mesagge, error)
+                return error(res, error.mesagge, error)
             } else {
                 return errorLog(res, 'Error al crear el rol', error)
             }

@@ -4,14 +4,17 @@ import { errorLog, getMessage, success } from "../../helpers/ResponseHandler.hel
 class GetRole {
     handleGetRoleById = async (id, res) => {
         try {
-            const select = {
-                id: true,
-                name: true,
-                description: true,
-                active: true
+            const options = {
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    active: true
+                },
+                where: { id }
             }
             
-            const role = await RoleModel.findById(id, select)
+            const role = await RoleModel.findOne(options)
             
             if (!role) return success(res, getMessage('response.empty'))
 
