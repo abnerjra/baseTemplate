@@ -1,5 +1,5 @@
 import ExpressAdapter from '../../helpers/libs/ExpressAdapter.plugin.js';
-import UserController from '../../controllers/User/UserController.js';
+import UserController from '../../controllers/User/UserController.controller.js';
 
 class UserRoutes {
     constructor() {
@@ -18,7 +18,7 @@ class UserRoutes {
         this.router.put('/users/:id', updateUser.bind(this.userController))
     }
 
-    getRouter = () => {
+    getProtectedRouter = () => {
         return this.router
     }
 }
