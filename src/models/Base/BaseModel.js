@@ -14,48 +14,71 @@ class BaseModel {
     /**
      * Busca un registro por su identificador único.
      * @param {integer} id Identificador único del registro
-     * @param {object} select objeto que especifica los campos a incluir en la respuesta. Si es null o vacío, se devuelven todos los campos.
      * @returns {Promise<object | null>} Devuelve los datos del registro en forma de objeto o un null si no hay datos
      */
-    findById = async (id, select = null) => {
+    findById = async (id) => {
         const query = { where: { id } };
-    
-        // Agregar select solo si no es null o undefined y contiene propiedades
-        if (select && Object.keys(select).length) {
-            query.select = select;
-        }
     
         return this.orm[this.modelName].findUnique(query);
     };
     
 
     /**
-     * Obtiene múltiples registros que coincidan con las condiciones proporcionadas.
-     * @param {object} select Objeto que especifica los campos a incluir en la respuesta. Si es null o vacío, se devuelven todos los campos.
-     * @param {object} where Objeto con las condiciones de búsqueda. Por defecto, busca todos los registros.
-     * @param {object} orderBy Objeto que especifica la columna por la cual serán ordenados los registros
-     * @returns {Promise<array>} Devuelve una lista de registros que cumplen con las condiciones.
+     * Realiza una búsqueda de múltiples registros en la base de datos utilizando los filtros proporcionados.
+     * @param {Object} filters - Filtros para personalizar la consulta.
+     * @param {Object<Object>} [filters.select] - Campos a seleccionar en los registros encontrados.
+     *     Ejemplo: `{ id: true, name: true }`.
+     * @param {Object} [filters.where] - Condiciones para filtrar los registros.
+     *     Ejemplo: `{ is_active: true }`.
+     * @param {Object|Array} [filters.orderBy] - Especifica cómo ordenar los resultados.
+     *     Ejemplo: `{ name: 'asc' }` o `[{ name: 'asc' }, { created_at: 'desc' }]`.
+     * @returns {Promise<Array<Object>>} - Una promesa que se resuelve con una lista de registros encontrados.
+     * 
+     * @example
+     * // Buscar registros activos con campos específicos
+     * const filters = {
+     *   select: { id: true, name: true },
+     *   where: { isActive: true },
+     *   orderBy: { name: 'asc' },
+     * };
      */
-    findAll = async (select = null, where = {}, orderBy = null) => {
-        const query = { where };
-    
-        // Agregar select solo si no es null o undefined y contiene propiedades
-        if (select && Object.keys(select).length) {
-            query.select = select;
-        }
-
+    findAll = async (filters) => {
+        const query = {};
+        const { select, where, orderBy } = filters
+        
+        if (select) query.select = select
+        if (where) query.where = where
         if (orderBy) query.orderBy = orderBy
         
         return this.orm[this.modelName].findMany(query);
     };
 
     /**
-     * Obtiene un registro por medio de un campo especifico
-     * @param {object} where Objeto con las condiciones de búsqueda
-     * @returns {Promise<array>} Devuelve una lista de registros que cumplen con las condiciones.
+     * Realiza la búsqueda de un registro en la base de datos utilizando los filtros proporcionados.
+     * @param {Object} filters - Filtros para personalizar la consulta.
+     * @param {Object<Object>} [filters.select] - Campos a seleccionar en los registros encontrados.
+     *     Ejemplo: `{ id: true, name: true }`.
+     * @param {Object} [filters.where] - Condiciones para filtrar los registros.
+     *     Ejemplo: `{ is_active: true }`.
+     * @param {Object|Array} [filters.orderBy] - Especifica cómo ordenar los resultados.
+     *     Ejemplo: `{ name: 'asc' }` o `[{ name: 'asc' }, { created_at: 'desc' }]`.
+     * @returns {Promise<Array<Object>>} - Una promesa que se resuelve con una lista de registros encontrados.
+     * 
+     * @example
+     * // Buscar registros activos con campos específicos
+     * const filters = {
+     *   select: { id: true, name: true },
+     *   where: { isActive: true },
+     *   orderBy: { name: 'asc' },
+     * };
      */
-    findOne = async (where = {}) => {
-        const query = { where };
+    findOne = async (filters) => {
+        const query = {};
+        const { select, where, orderBy } = filters
+        
+        if (select) query.select = select
+        if (where) query.where = where
+        if (orderBy) query.orderBy = orderBy
     
         return this.orm[this.modelName].findFirst(query);
     };
