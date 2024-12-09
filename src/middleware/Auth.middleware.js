@@ -28,8 +28,8 @@ class Auth {
             
             req.user = filterUser
             next()
-        } catch (error) {
-            return errorLog(res, getMessage('auth.sessionExpire'), error)
+        } catch (exception) {
+            return error(res, getMessage('auth.sessionExpire'), exception)
         }
     }
 }
