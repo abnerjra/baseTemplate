@@ -36,7 +36,7 @@ app.useRoutes([
     
     // Rutas con middleware
     { router: authRoute.getProtectedRouter(), middlewares },
-    { router: userRoute.getRouter(), middlewares },
+    { router: userRoute.getProtectedRouter(), middlewares },
     { router: roleRoute.getProtectedRouter(), middlewares },
     { router: catalogRoute.getProtectedRouter(), middlewares }
 ]);
