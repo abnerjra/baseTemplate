@@ -44,11 +44,13 @@ class BaseModel {
      */
     findAll = async (filters) => {
         const query = {};
-        const { select, where, orderBy } = filters
+        if (filters) {
+            const { select, where, orderBy } = filters
         
-        if (select) query.select = select
-        if (where) query.where = where
-        if (orderBy) query.orderBy = orderBy
+            if (select) query.select = select
+            if (where) query.where = where
+            if (orderBy) query.orderBy = orderBy
+        }
         
         return this.orm[this.modelName].findMany(query);
     };
