@@ -71,3 +71,5 @@ Paso 3) Ejecutar las migraciones de prisma
 ```shell
     $ docker exec -it template-api npx prisma migrate reset && docker exec -it template-api npx prisma migrate dev --name init && docker exec -it template-api npx prisma generate
 ```
+
+Listo con esto ya tienes el proyecto corriendo
