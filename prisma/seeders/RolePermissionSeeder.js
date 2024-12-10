@@ -10,11 +10,11 @@ class RolePermissionSeeder {
     }
 
     seed = async () => {
-        const permissionList = await PermissionListModel.findAll(null, { active: true })
+        const permissionList = await PermissionListModel.findAll({ where : { active: true } })
         const moduleRoot = await ModuleModel.findAll()
-        const moduleAdmin = await ModuleModel.findAll(null, { key: 'user' })
-        const roleRoot = await RoleModel.findOne({ key: 'root' })
-        const roleAdmin = await RoleModel.findOne({ key: 'admin' })
+        const moduleAdmin = await ModuleModel.findAll({ where : { key: 'user' } })
+        const roleRoot = await RoleModel.findOne({ where: { key: 'root' } })
+        const roleAdmin = await RoleModel.findOne({ where: { key: 'admin' } })
 
         // build permissions array by role
         // ROLE ROOT
@@ -47,7 +47,7 @@ class RolePermissionSeeder {
         // Save DB
         let cont = 0
         for (const permission of permissions) {
-            const checkPermission = await PermissionModel.findOne({ name: permission.name })
+            const checkPermission = await PermissionModel.findOne({ where: { name: permission.name } })
             // console.log(checkPermission);
 
             if (!checkPermission) {
@@ -58,8 +58,10 @@ class RolePermissionSeeder {
                 })
 
                 const existsRelation = await RoleHasPermissionsModel.findOne({
-                    role_id: permission.role_id,
-                    permission_id: createdPermission.id
+                    where: {
+                        role_id: permission.role_id,
+                        permission_id: createdPermission.id
+                    }
                 })
 
                 if (!existsRelation) {

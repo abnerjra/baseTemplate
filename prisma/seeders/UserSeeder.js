@@ -26,7 +26,7 @@ class UserSeeder {
 
         let cont = 0;
         for (const content of data) {
-            const checkUser = await UserModel.findOne({ email: content.email })
+            const checkUser = await UserModel.findOne({ where: { email: content.email } })
 
             if (!checkUser) {
                 await UserModel.create(content)

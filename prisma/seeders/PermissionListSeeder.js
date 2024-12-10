@@ -28,7 +28,7 @@ class PermissionListSeeder {
         
         let cont = 0
         for (const content of data) {
-            const uniqueKey = await PermissionListModel.findOne({ key: content.key })
+            const uniqueKey = await PermissionListModel.findOne({ where: { key: content.key } })
 
             if (!uniqueKey) {
                 await PermissionListModel.create(content)

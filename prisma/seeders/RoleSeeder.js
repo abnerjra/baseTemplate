@@ -21,7 +21,7 @@ class RoleSeeder {
 
         let cont = 0
         for (const content of data) {
-            const uniqueKey =  await RoleModel.findOne({ key: content.key })
+            const uniqueKey =  await RoleModel.findOne({ where: { key: content.key } })
 
             if (!uniqueKey) {
                 await RoleModel.create(content)

@@ -8,8 +8,8 @@ class PermissionModuleSeeder {
     }
 
     seed = async () => {
-        const modules = await ModuleModel.findAll(null, { active: true })
-        const permissionList = await PermissionListModel.findAll(null, { active: true })
+        const modules = await ModuleModel.findAll({ where: { active: true } })
+        const permissionList = await PermissionListModel.findAll({ where: { active: true } })
 
         let permissionModule = []
         for (const module of modules) {
@@ -24,8 +24,10 @@ class PermissionModuleSeeder {
         let cont = 0
         for (const content of permissionModule) {
             const checkPermission = await PermissionModuleModel.findOne({
-                module_id: content.module_id,
-                permission_list_id: content.permission_list_id
+                where: {
+                    module_id: content.module_id,
+                    permission_list_id: content.permission_list_id
+                }
             })
             
             if (!checkPermission) {

@@ -21,7 +21,7 @@ class ModuleSeeder {
 
         let cont = 0
         for (const content of data) {
-            const uniqueKey = await ModuleModel.findOne({ key: content.key })
+            const uniqueKey = await ModuleModel.findOne({ where: { key: content.key } })
             
             if (!uniqueKey) {
                 await ModuleModel.create(content)

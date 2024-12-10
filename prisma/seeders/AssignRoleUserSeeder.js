@@ -8,11 +8,11 @@ class AssignRoleUserSeeder {
     }
 
     seed = async() => {
-        const roleRoot = await RoleModel.findOne({ key: 'root' })
-        const roleAdmin = await RoleModel.findOne({ key: 'admin' })
+        const roleRoot = await RoleModel.findOne({ where: { key: 'root' } })
+        const roleAdmin = await RoleModel.findOne({ where: { key: 'admin' } })
 
-        const userRoot = await UserModel.findOne({ email: 'abner.jurado@teit.cfe.mx' })
-        const userAdmin = await UserModel.findOne({ email: 'diego.galvan@teit.cfe.mx' })
+        const userRoot = await UserModel.findOne({ where: { email: 'abner.jurado@teit.cfe.mx' } })
+        const userAdmin = await UserModel.findOne({ where: { email: 'diego.galvan@teit.cfe.mx' } })
 
         const userHasRole = [
             {
