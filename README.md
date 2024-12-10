@@ -7,6 +7,9 @@ Instalación de dependencias
 - Prisma [Documentación](https://www.prisma.io/docs/getting-started?_gl=1*3lzlv3*_up*MQ..*_gs*MQ..)
 
 ## Clonar proyecto de git
+```shell
+    $ git clone https://github.com/abnerjra/baseTemplate.git
+```
 
 ## ** Importante** 
 - Docker ocupa los siguientes puertos para la base de datos y node js
@@ -16,6 +19,8 @@ Instalación de dependencias
     | Node JS  | 3002  |
     | PostgreSQL  | 5440 |
 
+- Descomprimir los archivos de dockerFiles.zip y seguir la estructura de carpetas que se esta recomendando
+- Una vez clonado el proyecto crea el archivo `.env` a partir del archivo `.env-template` y configura las variables de entorno
 - Antes de ejecutar el paso 3, es necesario crear la base de datos
 
 
@@ -24,6 +29,8 @@ Instalación de dependencias
 ```
 ├── template
 |   ├── README.md
+|   ├── .env-template
+|   ├── dockerFiles.zip
 |   ├── package.json
 |   ├── package-lock.json
 |   ├── node_modules
@@ -71,5 +78,10 @@ Paso 3) Ejecutar las migraciones de prisma
 ```shell
     $ docker exec -it template-api npx prisma migrate reset && docker exec -it template-api npx prisma migrate dev --name init && docker exec -it template-api npx prisma generate
 ```
+Paso 4) Ejecutar los seeders del proyecto
 
-Listo con esto ya tienes el proyecto corriendo
+```shell
+    $ docker exec template-api npm run seed
+```
+
+## Listo con esto ya tienes el proyecto corriendo
