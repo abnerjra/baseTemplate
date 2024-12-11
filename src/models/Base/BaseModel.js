@@ -144,10 +144,10 @@ class BaseModel {
     }
 
     /**
- * Ejecuta una transacción utilizando el cliente Prisma.
- * @param {function} callback Una función que contiene las operaciones que se deben ejecutar dentro de la transacción.
- * @returns {Promise<any>} El resultado de la transacción.
- */
+     * Ejecuta una transacción utilizando el cliente Prisma.
+     * @param {function} callback Una función que contiene las operaciones que se deben ejecutar dentro de la transacción.
+     * @returns {Promise<any>} El resultado de la transacción.
+     */
     transaction = async (callback) => {
         const originalOrm = this.orm; // Guarda la referencia al ORM original
         try {
