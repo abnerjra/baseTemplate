@@ -23,5 +23,8 @@ export default {
     validate: {
         existsEmail:  { message: "El correo ingresado ya existe en el sistema", severity: "warning", code: 422 },
         notExists:  { message: "El registro no existe", severity: "warning", code: 422 },
+    },
+    permission: {
+        without_permission:  { message: "No tienes permisos para ver esta sección", severity: "warning", code: 403 },
     }
 }
