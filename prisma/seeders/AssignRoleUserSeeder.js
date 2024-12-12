@@ -28,8 +28,10 @@ class AssignRoleUserSeeder {
         let cont = 0
         for (const content of userHasRole) {
             const checkRoleUser = await UserHasRoleModel.findOne({
-                user_id: content.user_id,
-                role_id: content.role_id
+                where: {
+                    user_id: content.user_id,
+                    role_id: content.role_id
+                }
             })
             
             if (!checkRoleUser) {
