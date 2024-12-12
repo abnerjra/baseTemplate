@@ -1,10 +1,10 @@
 ## Configuración de proyecto
 
 Instalación de dependencias
-- Docker [Documentación](https://docs.docker.com/engine/install/)
-- PostgreSQL 15 [Documentación](https://www.postgresql.org/download/)
-- Node JS Versión 22.11 [Documentación](https://nodejs.org/en/download/package-manager/)
-- Prisma [Documentación](https://www.prisma.io/docs/getting-started?_gl=1*3lzlv3*_up*MQ..*_gs*MQ..)
+- Docker (Requerido) [Documentación](https://docs.docker.com/engine/install/)
+- PostgreSQL 15 (Requerido) [Documentación](https://www.postgresql.org/download/)
+- Node JS Versión 22.11 (Opcional) [Documentación](https://nodejs.org/en/download/package-manager/)
+- Prisma (Opcional) [Documentación](https://www.prisma.io/docs/getting-started?_gl=1*3lzlv3*_up*MQ..*_gs*MQ..)
 
 ## Clonar proyecto de git
 ```shell
@@ -19,36 +19,33 @@ Instalación de dependencias
     | Node JS  | 3002  |
     | PostgreSQL  | 5440 |
 
-- Descomprimir los archivos de dockerFiles.zip y seguir la estructura de carpetas que se esta recomendando
-- Una vez clonado el proyecto crea el archivo `.env` a partir del archivo `.env-template` y configura las variables de entorno
-- Antes de ejecutar el paso 3, es necesario crear la base de datos
+- Una vez clonado el proyecto crea el archivo `.env` a partir del archivo `.env-template` y configura las variables de entorno. La variable de entorno `PORT` corresponde al puerto de Node JS.
+- Descomprimir los archivos de dockerFiles.zip y seguir la estructura de carpetas que se esta recomendando. Toma en cuenta lo siguiente, dentro de los archivos `template.Dockerfile` y `docker-compose.yml` se esta apuntando al directorio `template` si el nombre de tu directorio es diferente puedes hacer los siguiente:
+    - ## Recomendación 1
+        - Cambiar el nombre de tu directorio a `template`
+    - ## Recomendación 2
+        - Sustituir el nombre del directorio `template` por el nombre de tu directorio
 
 
 ## Estructura de carpetas recomendada para iniciar el proyecto por medio de docker
 
 ```
 ├── template
-|   ├── README.md
-|   ├── .env-template
-|   ├── dockerFiles.zip
-|   ├── package.json
-|   ├── package-lock.json
-|   ├── node_modules
-|   ├── prisma
-|   │   ├── migrations
-|   │   ├── schema.prisma
-|   │   ├── seeders
-|   │   └── seed.js
-|   └── src
-|       ├── app.js
-|       ├── controllers
-|       ├── helpers
-|       ├── middleware
-|       ├── models
-|       ├── routes
-|       └── use-cases
-├── template.Dockerfile
+│ ├── dockerFiles.zip
+│ ├── package.json
+│ ├── prisma/
+│ ├── README.md
+│ └── src
+│     ├── app.js
+│     ├── controllers/
+│     ├── helpers/
+│     ├── middleware/
+│     ├── models/
+│     ├── routes/
+│     └── use-cases/
+├── config/
 ├── docker-compose.yml
+└── template.Dockerfile
 ```
 
 ## Comandos para ejecución en docker
