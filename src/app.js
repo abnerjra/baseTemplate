@@ -1,6 +1,7 @@
 import ExpressAdapter from './helpers/libs/ExpressAdapter.plugin.js';
 import cors from 'cors'
 import 'dotenv/config'
+import multer from "multer";
 
 // Import middleware
 import {
@@ -17,12 +18,14 @@ import {
 } from './routes/index.js';
 
 const app = new ExpressAdapter()
+const upload = new multer()
 
 // Middlewares globales
 app.useMiddlewares([
     cors(),
     app.createExpress().json(), // Recibir información en formato JSON
     app.createExpress().urlencoded({ extended: true }), // Recibir información de un formData
+    upload.none(),
     prefixMiddleware.handle
 ]);
 
