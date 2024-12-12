@@ -4,7 +4,8 @@ import 'dotenv/config'
 
 // Import middleware
 import {
-    authMiddleware
+    authMiddleware,
+    prefixMiddleware
 } from './middleware/index.js'
 
 // import routes
@@ -22,6 +23,7 @@ app.useMiddlewares([
     cors(),
     app.createExpress().json(), // Recibir información en formato JSON
     app.createExpress().urlencoded({ extended: true }), // Recibir información de un formData
+    prefixMiddleware.handle
 ]);
 
 const middlewares = [
