@@ -10,11 +10,11 @@ class RoleRoutes {
     }
 
     initializeRoutes = () => {
-        const { listRoles, getRoleById, createRole, updateRole } = this.roleController
-        this.protectedRouter.get('/role/', listRoles.bind(this.roleController))
-        this.protectedRouter.get('/role/:id', getRoleById.bind(this.roleController))
-        this.protectedRouter.post('/role', createRole.bind(this.roleController))
-        this.protectedRouter.put('/role/:id', updateRole.bind(this.roleController))
+        const { index, show, create, update } = this.roleController
+        this.protectedRouter.get('/role/', index.bind(this.roleController))
+        this.protectedRouter.get('/role/:id', show.bind(this.roleController))
+        this.protectedRouter.post('/role', create.bind(this.roleController))
+        this.protectedRouter.put('/role/:id', update.bind(this.roleController))
     }
 
 

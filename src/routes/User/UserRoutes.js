@@ -10,12 +10,12 @@ class UserRoutes {
     }
 
     initializeRoutes = () => {
-        const { listUsers, getUserById, createUser, updateUser } = this.userController;
+        const { index, show, store, update } = this.userController;
 
-        this.router.get('/users', listUsers.bind(this.userController))
-        this.router.get('/users/:id', getUserById.bind(this.userController))
-        this.router.post('/users', createUser.bind(this.userController))
-        this.router.put('/users/:id', updateUser.bind(this.userController))
+        this.router.get('/user', index.bind(this.userController))
+        this.router.get('/user/:id', show.bind(this.userController))
+        this.router.post('/user', store.bind(this.userController))
+        this.router.put('/user/:id', update.bind(this.userController))
     }
 
     getProtectedRouter = () => {
