@@ -15,7 +15,7 @@ class UserModel extends BaseModel {
             where: { user_id: userId },
             select: {
                 role: {
-                    select: { id: true, name: true }
+                    select: { id: true, name: true, key: true }
                 }
             }
         })
