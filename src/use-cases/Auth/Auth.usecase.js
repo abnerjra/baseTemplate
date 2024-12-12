@@ -13,7 +13,7 @@ class Auth {
     login = async (email, password, res) => {
         try {
             // Check that the email exists
-            const user = await UserModel.findOne({ email })
+            const user = await UserModel.findOne({ where: { email } })
             if (!user) return error(res, getMessage("auth.notFoundEmail"))
             
             // Check that the password matches
