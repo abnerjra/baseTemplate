@@ -1,4 +1,6 @@
 import { toZonedTime, format } from "date-fns-tz";
+import fs from 'fs/promises';
+import path from "path";
 
 class GeneralFunctions {
     constructor () {
@@ -71,11 +73,33 @@ class GeneralFunctions {
 
         return formattedDate;
     }
+
+    /**
+     * Valida si existe un directorio, si no existe lo crea
+     * @param {string} directory Nombre de la carpeta a ser creada
+     * 
+     * @returns {Promise<void>}
+     * 
+     * @example
+     * Los directorios creados se guardan dentro de `src/storage/files/`
+     */
+    mkDirectory = async (directory) => {
+        const makeDirectory = `src/storage/files/${directory}`
+        const directoryPath = path.resolve(makeDirectory)
+        try {
+            await fs.access(directoryPath)
+            console.log(`La carpeta "${makeDirectory}" ya existe.`);
+        } catch (error) {
+            await fs.mkdir(directoryPath, { recursive: true });
+            console.log(`La carpeta "${makeDirectory}" fue creada.`);
+        }
+    }
 }
 
 const GeneralFunctionsInstance = new GeneralFunctions()
 export const {
     getCurrentDate,
     convertUnixToDate,
-    convertDateUTCToTimeZone
+    convertDateUTCToTimeZone,
+    mkDirectory
 } = GeneralFunctionsInstance
